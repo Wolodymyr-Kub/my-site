@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Піраміда рівнів лідерства</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f9f9f9;
+      font-family: sans-serif;
+    }
+    .cross {
+      position: relative;
+      width: 60px;
+      height: 100px;
+      margin-bottom: 20px;
+    }
+    .cross::before,
+    .cross::after {
+      content: '';
+      position: absolute;
+      background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+      background-color: #8B4513;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    .cross::before {
+      width: 20px;
+      height: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .cross::after {
+      width: 60px;
+      height: 20px;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    #pyramid {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      width: 600px;
+    }
+    .step {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 4px 0;
+      height: 50px;
+      line-height: 1.2;
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+      overflow: hidden;
+      transition: filter 0.3s, height 0.3s, background 0.3s;
+      padding: 0 8px;
+      box-sizing: border-box;
+      border-radius: 4px;
+    }
+    .step:hover {
+      filter: saturate(150%);
+    }
+    .step[data-level="0"] { width: 100%; background: #FF0000; } /* Червоний */
+    .step[data-level="1"] { width: 90%;  background: #FF4500; } /* Помаранчевий */
+    .step[data-level="2"] { width: 80%;  background: #FFFF00; color: #000; } /* Жовтий */
+    .step[data-level="3"] { width: 70%;  background: #00FF00; color: #000; } /* Зелений */
+    .step[data-level="4"] { width: 60%;  background: #00B7EB; } /* Блакитний */
+    .step[data-level="5"] { width: 40%;  background: #0000FF; height: 66px; } /* Синій */
+    .step[data-level="6"] { width: 17.9%; background: #800080; height: 95px; } /* Фіолетовий */
+    .description {
+      display: none;
+      font-size: 14px;
+      padding: 8px 0;
+    }
+    .step.expanded .description {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="cross"></div>
+  <div id="pyramid">
+    <div class="step" data-level="0">
+      Opportunist
+      <div class="description">Діє заради власної вигоди, часто ігноруючи інших.</div>
+    </div>
+    <div class="step" data-level="1">
+      Diplomat
+      <div class="description">Прагне уникати конфліктів і підтримувати гармонію.</div>
+    </div>
+    <div class="step" data-level="2">
+      Expert
+      <div class="description">Фокусується на знаннях і прагне досконалості.</div>
+    </div>
+    <div class="step" data-level="3">
+      Achiever
+      <div class="description">Орієнтований на досягнення цілей і ефективність.</div>
+    </div>
+    <div class="step" data-level="4">
+      Individualist
+      <div class="description">Цінує унікальність і внутрішню мотивацію.</div>
+    </div>
+    <div class="step" data-level="5">
+      Strategist
+      <div class="description">Думає системно, бачить ширшу картину.</div>
+    </div>
+    <div class="step" data-level="6">
+      Alchemist
+      <div class="description">Трансформує реальність, інноваційний лідер.</div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.step').forEach(step => {
+      const defaultH = step.clientHeight + 'px';
+      step.dataset.defaultHeight = defaultH;
+
+      step.addEventListener('contextmenu', event => {
+        event.preventDefault();
+        if (!step.classList.contains('expanded')) {
+          step.style.height = step.scrollHeight + 'px';
+          step.classList.add('expanded');
+        } else {
+          step.style.height = step.dataset.defaultHeight;
+          step.classList.remove('expanded');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

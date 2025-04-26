@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Піраміда рівнів лідерства</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f9f9f9;
+      font-family: sans-serif;
+    }
+    #pyramid {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      width: 600px;
+    }
+    .step {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 4px 0;
+      height: 50px;
+      line-height: 1.2;
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+      overflow: hidden;
+      transition: filter 0.3s, height 0.3s;
+      padding: 0 8px;
+      box-sizing: border-box;
+      border-radius: 4px;
+    }
+    .step:hover {
+      filter: saturate(150%);
+    }
+    .step[data-level="0"] { width: 100%;  background: #e74c3c; }
+    .step[data-level="1"] { width: 90%;   background: #e67e22; }
+    .step[data-level="2"] { width: 80%;   background: #f1c40f; }
+    .step[data-level="3"] { width: 70%;   background: #3498db; }
+    .step[data-level="4"] { width: 60%;   background: #9b59b6; }
+    .step[data-level="5"] { width: 50%;   background: #bdc3c7; color: #000; }
+    .step[data-level="6"] { width: 40%;   background: #8e44ad; }
+  </style>
+</head>
+<body>
+  <div id="pyramid">
+    <div class="step" data-level="0">Opportunist</div>
+    <div class="step" data-level="1">Diplomat</div>
+    <div class="step" data-level="2">Expert</div>
+    <div class="step" data-level="3">Achiever</div>
+    <div class="step" data-level="4">Individualist</div>
+    <div class="step" data-level="5">Strategist</div>
+    <div class="step" data-level="6">Alchemist</div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.step').forEach(step => {
+      // Зберігаємо початкову висоту для подальшого скасування розгортання
+      const defaultH = step.clientHeight + 'px';
+      step.dataset.defaultHeight = defaultH;
+
+      // При кліку правою кнопкою відкриваємо/закриваємо розгортання
+      step.addEventListener('contextmenu', event => {
+        event.preventDefault();
+        if (!step.classList.contains('expanded')) {
+          // Підлаштовуємо висоту під весь вміст
+          step.style.height = step.scrollHeight + 'px';
+          step.classList.add('expanded');
+        } else {
+          // Повертаємо початкову висоту
+          step.style.height = step.dataset.defaultHeight;
+          step.classList.remove('expanded');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

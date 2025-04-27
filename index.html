@@ -6,19 +6,24 @@
   <title>Піраміда рівнів лідерства</title>
   <style>
     body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      background: #f9f9f9;
-      font-family: sans-serif;
+      justify-content: flex-start;
+      background: linear-gradient(135deg, #f0f0f0, #dfe9f3);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth; /* Плавна прокрутка */
     }
+
     .cross {
       position: relative;
       width: 60px;
       height: 100px;
+      margin-top: 30px;
       margin-bottom: 20px;
     }
     .cross::before,
@@ -42,52 +47,136 @@
       left: 50%;
       transform: translateX(-50%);
     }
+
     #pyramid {
       display: flex;
       flex-direction: column-reverse;
       align-items: center;
-      width: 600px;
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+      box-sizing: border-box;
     }
+
     .step {
       position: relative;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      margin: 4px 0;
+      justify-content: center;
+      margin: 6px 0;
       height: 50px;
       line-height: 1.2;
       color: #fff;
       cursor: pointer;
       user-select: none;
       overflow: hidden;
-      transition: filter 0.3s, height 0.3s, background 0.3s;
-      padding: 0 8px;
-      box-sizing: border-box;
-      border-radius: 4px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeInUp 0.8s forwards;
     }
+
+    .step[data-level="0"] { width: 100%; background: #FF4E50; animation-delay: 0.1s; }
+    .step[data-level="1"] { width: 90%;  background: #FC913A; animation-delay: 0.2s; }
+    .step[data-level="2"] { width: 80%;  background: #F9D423; color: #333; animation-delay: 0.3s; }
+    .step[data-level="3"] { width: 70%;  background: #7AC29A; color: #333; animation-delay: 0.4s; }
+    .step[data-level="4"] { width: 60%;  background: #4DD0E1; animation-delay: 0.5s; }
+    .step[data-level="5"] { width: 45%;  background: #00ACC1; height: 65px; animation-delay: 0.6s; }
+    .step[data-level="6"] { width: 25%;  background: #AB47BC; height: 90px; animation-delay: 0.7s; }
+
     .step:hover {
-      filter: saturate(150%);
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     }
-    .step[data-level="0"] { width: 100%; background: #FF0000; } /* Червоний */
-    .step[data-level="1"] { width: 90%;  background: #FF4500; } /* Помаранчевий */
-    .step[data-level="2"] { width: 80%;  background: #FFFF00; color: #000; } /* Жовтий */
-    .step[data-level="3"] { width: 70%;  background: #00FF00; color: #000; } /* Зелений */
-    .step[data-level="4"] { width: 60%;  background: #00B7EB; } /* Блакитний */
-    .step[data-level="5"] { width: 40%;  background: #0000FF; height: 66px; } /* Синій */
-    .step[data-level="6"] { width: 17.9%; background: #800080; height: 95px; } /* Фіолетовий */
+    .step.expanded {
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      color: #333;
+    }
+
     .description {
       display: none;
+      padding: 10px 15px;
       font-size: 14px;
-      padding: 8px 0;
+      text-align: center;
+      animation: fadeIn 0.4s ease forwards;
     }
     .step.expanded .description {
       display: block;
     }
+
+    .btn-next {
+      margin-top: 30px;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      color: #333;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s forwards;
+      animation-delay: 1s;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .btn-next:hover {
+      background: linear-gradient(135deg, #ACB6E5, #74ebd5);
+      transform: translateY(20px);
+    }
+
+    .next-section {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: #333;
+      background: #d0e1f9;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    @media (max-width: 600px) {
+      #pyramid {
+        padding: 10px;
+      }
+      .step {
+        font-size: 14px;
+      }
+      .description {
+        font-size: 13px;
+      }
+      .btn-next {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="cross"></div>
+
   <div id="pyramid">
     <div class="step" data-level="0">
       Opportunist
@@ -119,22 +208,38 @@
     </div>
   </div>
 
-  <script>
-    document.querySelectorAll('.step').forEach(step => {
-      const defaultH = step.clientHeight + 'px';
-      step.dataset.defaultHeight = defaultH;
+  <button class="btn-next" onclick="document.getElementById('next').scrollIntoView({ behavior: 'smooth' });">Перейти далі</button>
 
-      step.addEventListener('contextmenu', event => {
+  <div id="next" class="next-section">
+    Наступна сторінка
+  </div>
+
+  <script>
+    const steps = document.querySelectorAll('.step');
+
+    steps.forEach(step => {
+      const defaultHeight = step.clientHeight + 'px';
+      step.dataset.defaultHeight = defaultHeight;
+
+      const toggleStep = (event) => {
         event.preventDefault();
-        if (!step.classList.contains('expanded')) {
+        const isExpanded = step.classList.contains('expanded');
+
+        steps.forEach(s => {
+          s.style.height = s.dataset.defaultHeight;
+          s.classList.remove('expanded');
+        });
+
+        if (!isExpanded) {
           step.style.height = step.scrollHeight + 'px';
           step.classList.add('expanded');
-        } else {
-          step.style.height = step.dataset.defaultHeight;
-          step.classList.remove('expanded');
         }
-      });
+      };
+
+      step.addEventListener('click', toggleStep);
+      step.addEventListener('touchstart', toggleStep);
     });
   </script>
+
 </body>
 </html>
